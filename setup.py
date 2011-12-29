@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = 'Platypus Router',
+    name = 'platypus-router',
     version = '0.1.0',
     description = 'Django like WSGI router',
     author = 'Vincent Jauneau',
