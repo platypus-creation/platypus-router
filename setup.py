@@ -1,7 +1,10 @@
 from setuptools import setup, find_packages
 
-with open('README') as file:
-    long_description = file.read()
+with open('README') as f:
+    long_description = f.read()
+
+with open('LICENSE') as f:
+    license = f.read()
 
 setup(
     name = 'platypus-router',
@@ -11,6 +14,7 @@ setup(
     author = 'Vincent Jauneau',
     author_email = 'vincent.jauneau@platypus-creation.com',
     url = 'https://github.com/platypus-creation/platypus-router/',
+    license=license,
     packages = find_packages(),
     install_requires = ['WebOb',],
 )
