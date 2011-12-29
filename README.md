@@ -1,0 +1,21 @@
+Django-like WSGI router.
+
+	from platypus-router.core import router
+
+	# Define a controller
+	def hello(request, name, template='Hello %s'):
+    	return template % name
+
+	# Register routes
+	router.add(r'^/hello/(?P<name>[\w_-]+)/$', hello)
+	router.add(r'^/hello/my/name/is/(?P<name>[\w_-]+)/$', hello, template='Hello my name is %s', name='hello_my_name_is')
+	
+	# Serve WSGI application
+	from wsgiref.simple_server import make_server
+
+	server = make_server('localhost', 8000, router)
+	server.serve_forever()
+
+    # Reverse controller URL
+	router.reverse(hello, name='Vincent') # /hello/Vincent/
+	router.reverse('hello_my_name_is', name='Vincent') # /hello/my/name/is/Vincent/
