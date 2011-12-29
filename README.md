@@ -1,6 +1,6 @@
 Django-like WSGI router.
 
-	from platypus-router.core import router
+	from router.core import router
 
 	# Define a controller
 	def hello(request, name, template='Hello %s'):
