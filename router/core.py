@@ -30,7 +30,7 @@ class Router(object):
     host = None
     port = None
     
-    def init(self, host, port=None):
+    def init(self, host, port=80):
         self.host = host
         self.port = port
 
@@ -75,7 +75,7 @@ class Router(object):
                 if absolute:
                     if self.host is None:
                         raise NotInitialized('To have absolute URL reverse, router have to be initialized. Please use router.init(host, port) method.')
-                    url = scheme + '://' + self.host + (self.port is not None and ':%d' % self.port or '') + url
+                    url = scheme + '://' + self.host + (self.port is not 80 and ':%d' % self.port or '') + url
                 return url
         except Exception, e:
             raise URLNotFound("Can't reverse %s with arguments %s" % (action, str(urlvars)), e)
