@@ -26,6 +26,18 @@ class TestRouter(unittest.TestCase):
         self.assertEqual('/hello/my/name/is/Vincent/', router.reverse('hello_my_name_is', name='Vincent'))
 
         try:
+            router.reverse(self.hello_method, name='Vincent', absolute=True)
+            self.fail()
+        except:
+            pass
+
+        router.init('localhost', 8000)
+        self.assertEqual('http://localhost:8000/hello/Vincent/', router.reverse(self.hello_method, name='Vincent', absolute=True))
+
+        router.init('www.platypus-creation.com')
+        self.assertEqual('http://www.platypus-creation.com/hello/Vincent/', router.reverse(self.hello_method, name='Vincent', absolute=True))
+
+        try:
             router.reverse('does.not.exist')
             self.fail()
         except URLNotFound:

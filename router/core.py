@@ -1,9 +1,15 @@
 from webob import Request, Response, exc
-import re
+import re, sys
 from utils import singleton
 from copy import deepcopy
 
-class URLNotFound(Exception):
+class RouterException(Exception):
+    pass
+
+class URLNotFound(RouterException):
+    pass
+
+class NotInitialized(RouterException):
     pass
 
 class Route(object):
@@ -20,9 +26,13 @@ class Router(object):
     router.add(r'^/$', 'actions.home')
     router.add(r'^/blog/(?P<slug>[\w_-]+)/$', 'blog.actions.article')
     '''
+    routes = []
+    host = None
+    port = None
     
-    def __init__(self):
-        self.routes = []
+    def init(self, host, port=None):
+        self.host = host
+        self.port = port
 
     def add(self, route_regexp, action, name=None, **urlvars):
         """
@@ -48,7 +58,7 @@ class Router(object):
             action = getattr(module, func_name)
         return action
     
-    def reverse(self, action, **urlvars):
+    def reverse(self, action, absolute=False, scheme='http', **urlvars):
         try:
             route = None
             if action in [route.name for route in self.routes if route.name is not None]:
@@ -62,6 +72,10 @@ class Router(object):
                 urlvars.update(route.urlvars)
                 for key, value in urlvars.items():
                     url = re.sub(r'\(\?P<%s>[^\)]+\)' % key, str(value), url)
+                if absolute:
+                    if self.host is None:
+                        raise NotInitialized('To have absolute URL reverse, router have to be initialized. Please use router.init(host, port) method.')
+                    url = scheme + '://' + self.host + (self.port is not None and ':%d' % self.port or '') + url
                 return url
         except Exception, e:
             raise URLNotFound("Can't reverse %s with arguments %s" % (action, str(urlvars)), e)

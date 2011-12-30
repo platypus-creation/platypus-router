@@ -8,7 +8,7 @@ with open('LICENSE') as f:
 
 setup(
     name = 'platypus-router',
-    version = '0.1.0',
+    version = '0.1.2',
     description = 'Django like WSGI router',
     long_description=long_description,
     author = 'Vincent Jauneau',
@@ -17,4 +17,6 @@ setup(
     license=license,
     packages = find_packages(),
     install_requires = ['WebOb',],
+    test_suite='router.tests.TestRouter',
+    keywords='platypus, router, routing, wsgi, django',
 )
