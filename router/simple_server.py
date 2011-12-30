@@ -1,4 +1,5 @@
 from wsgiref.simple_server import make_server
+from core import router
 
 def runserver(router):
     server = make_server(router.host, router.port, router)
