@@ -32,7 +32,7 @@ class Router(object):
     
     def init(self, host, port=80):
         self.host = host
-        self.port = port
+        self.port = int(port)
 
     def add(self, route_regexp, action, name=None, **urlvars):
         """
